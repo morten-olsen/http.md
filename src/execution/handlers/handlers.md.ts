@@ -23,6 +23,7 @@ const fileHandler: ExecutionHandler = ({
         }
         const { root: newRoot } = await execute(filePath, {
           context,
+          behead: node.attributes?.behead ? parseInt(node.attributes.behead) : undefined,
         });
         if (!parent) {
           throw new Error('Parent node is required');

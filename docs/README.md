@@ -21,6 +21,10 @@ It allows developers to create API documentation that is always accurate and up-
 - **Tutorials & Guides:** Build step-by-step guides where each HTTP interaction is shown with its real output.
 - **Rapid Prototyping:** Quickly experiment with APIs and document your findings.
 
+## Content
+
+::toc
+
 ## Installation
 
 Install `http.md` globally using npm:
@@ -85,7 +89,7 @@ _(Note: Actual headers and some response fields might vary.)_
 
 HTTP requests are defined in fenced code blocks annotated with `http`. The syntax is similar to the raw HTTP format:
 
-```
+```http disable
 <METHOD> <URL>
 <Header-Name>: <Header-Value>
 ...

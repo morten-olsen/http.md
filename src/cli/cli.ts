@@ -1,14 +1,15 @@
 import { program } from 'commander';
 import { resolve } from 'node:path';
-import { marked } from 'marked';
+import { Marked } from 'marked';
 import { markedTerminal } from 'marked-terminal';
 import { execute } from '../execution/execution.js';
 import { Context } from '../context/context.js';
 import { writeFile } from 'node:fs/promises';
 import { Watcher } from '../watcher/watcher.js';
+import { UI } from './ui/ui.js';
+import { wrapBody } from '../theme/theme.html.js';
 
 
-marked.use(markedTerminal() as any);
 
 program
   .command('dev')
@@ -17,10 +18,14 @@ program
   .option('-w, --watch', 'watch for changes')
   .option('-i, --input <input...>', 'input variables (-i foo=bar -i baz=qux)')
   .action(async (name, options) => {
+    const marked = new Marked();
+    marked.use(markedTerminal() as any);
     const {
       watch = false,
       input: i = [],
     } = options;
+
+    const ui = new UI();
 
     const input = Object.fromEntries(
       i.map((item: string) => {
@@ -39,7 +44,7 @@ program
       });
 
       const markdown = await marked.parse(result.markdown);
-      console.log(markdown);
+      ui.content = markdown;
 
       return {
         ...result,
@@ -48,6 +53,10 @@ program
     }
 
     const result = await build();
+
+    ui.screen.key(['r'], () => {
+      build();
+    });
 
     if (watch) {
       const watcher = new Watcher();
@@ -66,12 +75,14 @@ program
   .argument('<name>', 'http.md file name')
   .argument('<output>', 'output file name')
   .description('Run a http.md document')
+  .option('-f, --format <format>', 'output format (html, markdown)')
   .option('-w, --watch', 'watch for changes')
   .option('-i, --input <input...>', 'input variables (-i foo=bar -i baz=qux)')
   .action(async (name, output, options) => {
     const {
       watch = false,
       input: i = [],
+      format = 'markdown',
     } = options;
 
 
@@ -91,7 +102,15 @@ program
         context,
       });
 
-      await writeFile(output, result.markdown);
+      if (format === 'html') {
+        const marked = new Marked();
+        const html = await marked.parse(result.markdown);
+        await writeFile(output, wrapBody(html));
+      } else if (format === 'markdown') {
+        await writeFile(output, result.markdown);
+      } else {
+        throw new Error('Invalid format');
+      }
       return {
         ...result,
         context,

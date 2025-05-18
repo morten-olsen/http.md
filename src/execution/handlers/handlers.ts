@@ -6,6 +6,7 @@ import { rawMdHandler } from "./handlers.raw-md.js";
 import { responseHandler } from "./handlers.response.js";
 import { textHandler } from "./handlers.text.js";
 import { codeHandler } from "./handlers.code.js";
+import { tocHandler } from "./handlers.toc.js";
 
 const handlers = [
   fileHandler,
@@ -17,4 +18,8 @@ const handlers = [
   codeHandler,
 ] satisfies ExecutionHandler[];
 
-export { handlers };
+const postHandlers = [
+  tocHandler,
+] satisfies ExecutionHandler[];
+
+export { handlers, postHandlers };

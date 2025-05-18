@@ -5,18 +5,12 @@ import remarkParse from 'remark-parse'
 import remarkRehype from 'remark-rehype'
 import remarkDirective from 'remark-directive'
 import remarkStringify from 'remark-stringify'
+import behead from 'remark-behead';
 import { unified } from 'unified'
 import { visit } from 'unist-util-visit'
 
 import { Context } from "../context/context.js";
-import { handlers } from './handlers/handlers.js';
-
-const parser = unified()
-  .use(remarkParse)
-  .use(remarkGfm)
-  .use(remarkDirective)
-  .use(remarkStringify)
-  .use(remarkRehype);
+import { handlers, postHandlers } from './handlers/handlers.js';
 
 type BaseNode = {
   type: string;
@@ -53,6 +47,7 @@ type ExecutionHandler = (options: {
 
 type ExexutionExecuteOptions = {
   context: Context;
+  behead?: number;
 }
 
 const execute = async (file: string, options: ExexutionExecuteOptions) => {
@@ -61,10 +56,32 @@ const execute = async (file: string, options: ExexutionExecuteOptions) => {
   const content = await readFile(file, 'utf-8');
   const steps: Set<ExecutionStep> = new Set();
 
+
+  const parser = unified()
+    .use(remarkParse)
+    .use(remarkGfm)
+    .use(remarkDirective)
+    .use(remarkStringify)
+    .use(remarkRehype)
+    .use(behead, {
+      depth: options.behead,
+    });
   const root = parser.parse(content);
 
   visit(root, (node, index, parent) => {
     for (const handler of handlers) {
+      handler({
+        addStep: (step) => steps.add(step),
+        node: node as BaseNode,
+        root,
+        parent: parent as BaseNode | undefined,
+        index,
+        file,
+      });
+    }
+  });
+  visit(root, (node, index, parent) => {
+    for (const handler of postHandlers) {
       handler({
         addStep: (step) => steps.add(step),
         node: node as BaseNode,

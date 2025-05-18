@@ -53,6 +53,7 @@ const responseHandler: ExecutionHandler = ({
 
         const codeNode = {
           type: 'code',
+          lang: 'http',
           value: responseContent,
         };
         if (!parent || !('children' in parent) || index === undefined) {
