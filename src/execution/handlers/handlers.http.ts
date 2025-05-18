@@ -69,7 +69,7 @@ const httpHandler: ExecutionHandler = ({
         }
       }
 
-      node.value = content;
+      node.value = [head, parsedBody].filter(Boolean).join('\n\n');
       node.meta = undefined;
 
       context.addRequest({

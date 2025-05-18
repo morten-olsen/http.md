@@ -89,7 +89,7 @@ _(Note: Actual headers and some response fields might vary.)_
 
 HTTP requests are defined in fenced code blocks annotated with `http`. The syntax is similar to the raw HTTP format:
 
-```http disable
+```
 <METHOD> <URL>
 <Header-Name>: <Header-Value>
 ...
@@ -132,9 +132,16 @@ You can assign a unique ID to an `http` request block. This allows you to:
 1.  Reference its specific response in a `::response` directive.
 2.  Access its request and response data in [Templating](https://www.google.com/search?q=%23templating-with-handlebars) via the `requests` and `responses` dictionaries.
 
-To add an ID, include `id=yourUniqueId` in the `http` block's info string:
+To add an ID, include `#yourUniqueId` or `id=yourUniqueId` in the `http` block's info string:
 
 ::raw-md[./examples/with-multiple-requests.md]
+
+<details>
+  <summary>Output</summary>
+
+::raw-md[./examples/with-multiple-requests.md]{render}
+
+</details>
 
 ## Templating with Handlebars
 

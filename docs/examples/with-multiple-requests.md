@@ -2,16 +2,16 @@
 
 First, create a resource:
 
-```http id=createUser
+```http #createUser,format=yaml
 POST https://httpbin.org/post
 Content-Type: application/json
 
-{"username": "alpha"}
+username: alpha
 ```
 
 Then, fetch a different resource:
 
-```http id=getItem
+```http #getItem
 GET https://httpbin.org/get?item=123
 ```
 
