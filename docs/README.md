@@ -209,34 +209,18 @@ The requests from the embedded document are processed, and their `request` and `
 
 Assume `_shared_requests.md` contains:
 
-````markdown
-```http id=sharedGetRequest
-GET https://httpbin.org/get
-```
-````
+::raw-md[./examples/_shared_requests.md]
 
 Then, in `main.md`:
 
-````markdown
-# Main Document
+::raw-md[./examples/with-template.md]
 
-Let's include some shared requests:
+<details>
+  <summary>Output</summary>
 
-::md[./_shared_requests.md]
+::raw-md[./examples/with-template.md]{render}
 
-The shared GET request returned: {{responses.sharedGetRequest.status}}
-
-Now, a request specific to this document:
-
-```http
-POST https://httpbin.org/post
-Content-Type: application/json
-
-{"dataFromMain": "someValue", "sharedUrl": "{{requests.sharedGetRequest.url}}"}
-```
-
-::response
-````
+</details>
 
 When `main.md` is processed, `_shared_requests.md` will be embedded, its `sharedGetRequest` will be executed, and its data will be available for templating.
 
