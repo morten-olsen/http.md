@@ -338,6 +338,17 @@ The `::md` directive embeds another markdown document.
 - `hidden`: If present, the actual content (markdown) of the embedded document will not be rendered in the output. However, any `http` requests within the embedded document _are still processed_, and their `request` and `response` data become available in the parent document's templating context (via `requests.id` and `responses.id`). This is useful if you only want to execute the requests from an included file (e.g., a common setup sequence) and use their results, without displaying the embedded file's content.
   - Example: `::md[./setup_requests.md]{hidden}`
 
+#### `::input[{name}]` Directive Options
+
+The `::input` directive is used to declare expected input variables
+
+- **Variable Name:** The first argument (required) is the name of the variable
+  - Example: `::input[myVariable]` will define `input.myVariable`
+- `required`: If present it will require that the variable is provided
+- `default={value}`: Defines the default value if no value has been provided
+- `format=string|number|bool|json|date`: If provided the value will be parsed using the specified format
+- ``
+
 ## Command-Line Interface (CLI)
 
 The `httpmd` tool provides the following commands:

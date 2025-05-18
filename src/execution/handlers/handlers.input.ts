@@ -22,10 +22,34 @@ const inputHandler: ExecutionHandler = ({
           context.input[name] = node.attributes.default;
         }
 
-        if (node.attributes?.format === 'number' && context.input[name] !== undefined) {
-          context.input[name] = Number(context.input[name]);
-          if (context.input[name] !== undefined && isNaN(Number(context.input[name]))) {
-            throw new Error(`Input "${name}" must be a number, but got "${context.input[name]}"`);
+        if (node.attributes?.format && context.input[name] !== undefined) {
+          const format = node.attributes.format;
+          if (format === 'number') {
+            context.input[name] = Number(context.input[name]);
+            if (context.input[name] !== undefined && isNaN(Number(context.input[name]))) {
+              throw new Error(`Input "${name}" must be a number, but got "${context.input[name]}"`);
+            }
+          }
+          if (format === 'boolean') {
+            context.input[name] = context.input[name] === 'true';
+          }
+          if (format === 'string') {
+            context.input[name] = String(context.input[name]);
+          }
+          if (format === 'json') {
+            try {
+              context.input[name] = JSON.parse(String(context.input[name]));
+            } catch (error) {
+              throw new Error(`Input "${name}" must be a valid JSON, but got "${context.input[name]}"`);
+            }
+          }
+
+          if (format === 'date') {
+            const date = new Date(context.input[name] as string);
+            if (isNaN(date.getTime())) {
+              throw new Error(`Input "${name}" must be a valid date, but got "${context.input[name]}"`);
+            }
+            context.input[name] = date;
           }
         }
 
