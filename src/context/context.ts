@@ -36,7 +36,7 @@ class Context {
 
   constructor(options: ContextOptions = {}) {
     this.input = options.input || {};
-    this.env = options.env || {};
+    this.env = options.env || process.env;
     this.requests = options.requests || {};
     this.responses = options.responses || {};
   }
