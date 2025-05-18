@@ -33,7 +33,8 @@ const httpHandler: ExecutionHandler = ({
       const content = template(context);
       const [head, body] = content.split('\n\n');
       const [top, ...headerItems] = head.split('\n');
-      const [method, url] = top.split(' ');
+      const [method, ...urlParts] = top.split(' ');
+      const url = urlParts.join(' ').trim();
 
       const headers = Object.fromEntries(
         headerItems.map((header) => {

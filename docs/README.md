@@ -176,6 +176,13 @@ Within your markdown document, the following variables are available in the Hand
 
 ::raw-md[./examples/with-template.md]
 
+<details>
+  <summary>Output</summary>
+
+::raw-md[./examples/with-template.md]{render}
+
+</details>
+
 _(Note: `httpbin.org/post` wraps the JSON sent in a "json" field in its response. If your API returns the ID directly at the root of the JSON body, you'd use `{{responses.createItem.body.id}}` assuming the `createItem` request had the `json` option.)_
 
 **2. Displaying a status code in markdown text:**
