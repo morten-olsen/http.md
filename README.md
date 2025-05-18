@@ -112,7 +112,7 @@ access-control-allow-origin: *
 connection: keep-alive
 content-length: 559
 content-type: application/json
-date: Sun, 18 May 2025 17:17:15 GMT
+date: Sun, 18 May 2025 18:31:46 GMT
 server: gunicorn/19.9.0
 
 {
@@ -129,7 +129,7 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682a161b-6f8d778138665a8f22ffbe94"
+    "X-Amzn-Trace-Id": "Root=1-682a2792-7df702ce77a3b3696937eaeb"
   }, 
   "json": {
     "greeting": "Hello, http.md!"
@@ -292,7 +292,7 @@ GET https://httpbin.org/anything/{{responses.createItem.body.json.name}}
 GET https://httpbin.org/status/201
 ```
 
-The request to `/status/201` completed with status code: **{{response.status}}**.
+The request to `/status/201` completed with status code: ****.
 ````
 
 ## Managing Documents
@@ -324,7 +324,7 @@ Let's include some shared requests:
 
 ::md[./_shared_requests.md]
 
-The shared GET request returned: {{responses.sharedGetRequest.status}}
+The shared GET request returned: 
 
 Now, a request specific to this document:
 
@@ -332,7 +332,7 @@ Now, a request specific to this document:
 POST https://httpbin.org/post
 Content-Type: application/json
 
-{"dataFromMain": "someValue", "sharedUrl": "{{requests.sharedGetRequest.url}}"}
+{"dataFromMain": "someValue", "sharedUrl": ""}
 ```
 
 ::response
@@ -356,8 +356,8 @@ httpmd build mydoc.md output.md -i baseUrl=https://api.production.example.com -i
 
 ````markdown
 ```http
-GET {{input.baseUrl}}/users/1
-Authorization: Bearer {{input.apiKey}}
+GET /users/1
+Authorization: Bearer 
 ```
 
 ::response
@@ -406,8 +406,8 @@ You can configure the behavior of each `http` code block by adding options to it
 
 ````markdown
 ```http id=complexRequest,json,yaml,hidden
-POST {{input.apiEndpoint}}/data
-X-API-Key: {{input.apiKey}}
+POST /data
+X-API-Key: 
 Content-Type: application/json
 
 # Request body written in YAML, will be converted to JSON
@@ -444,6 +444,17 @@ The `::md` directive embeds another markdown document.
   * Example: `::md[./includes/authentication.md]`
 * `hidden`: If present, the actual content (markdown) of the embedded document will not be rendered in the output. However, any `http` requests within the embedded document *are still processed*, and their `request` and `response` data become available in the parent document's templating context (via `requests.id` and `responses.id`). This is useful if you only want to execute the requests from an included file (e.g., a common setup sequence) and use their results, without displaying the embedded file's content.
   * Example: `::md[./setup_requests.md]{hidden}`
+
+#### `::input[{name}]` Directive Options
+
+The `::input` directive is used to declare expected input variables
+
+* **Variable Name:** The first argument (required) is the name of the variable
+  * Example: `::input[myVariable]` will define `input.myVariable`
+* `required`: If present it will require that the variable is provided
+* `default={value}`: Defines the default value if no value has been provided
+* `format=string|number|bool|json|date`: If provided the value will be parsed using the specified format
+* \`\`
 
 ## Command-Line Interface (CLI)
 
