@@ -110,9 +110,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 556
+content-length: 555
 content-type: application/json
-date: Sun, 18 May 2025 18:55:55 GMT
+date: Sun, 18 May 2025 19:12:17 GMT
 server: gunicorn/19.9.0
 
 {
@@ -129,12 +129,12 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682a2d3b-244883ec40275d5e642566d6"
+    "X-Amzn-Trace-Id": "Root=1-682a3111-131bcbff690b03fd64aa4617"
   }, 
   "json": {
     "greeting": "Hello, http.md!"
   }, 
-  "origin": "13.64.151.43", 
+  "origin": "23.96.180.7", 
   "url": "https://httpbin.org/post"
 }
 
@@ -264,14 +264,14 @@ Within your markdown document, the following variables are available in the Hand
 **1. Using a value from a previous response in a new request:**
 
 ````markdown
-```http id=createItem json
+```http #createItem,json
 POST https://httpbin.org/post
 Content-Type: application/json
 
 {"name": "My New Item"}
 ```
 
-The new item ID is: {{responses.createItem.body.json.name}}
+The new item ID is: {{response.body.json.name}}
 
 Now, let's fetch the item using a (mocked) ID from the response:
 
@@ -282,6 +282,61 @@ GET https://httpbin.org/anything/{{responses.createItem.body.json.name}}
 ::response{#fetchItem}
 
 ````
+
+<details>
+  <summary>Output</summary>
+
+````markdown
+```http
+POST https://httpbin.org/post
+Content-Type: application/json
+
+{"name": "My New Item"}
+```
+
+The new item ID is: My New Item
+
+Now, let's fetch the item using a (mocked) ID from the response:
+
+```http
+GET https://httpbin.org/anything/My New Item
+```
+
+```
+HTTP/200 OK
+access-control-allow-credentials: true
+access-control-allow-origin: *
+connection: keep-alive
+content-length: 451
+content-type: application/json
+date: Sun, 18 May 2025 19:12:18 GMT
+server: gunicorn/19.9.0
+
+{
+  "args": {}, 
+  "data": "", 
+  "files": {}, 
+  "form": {}, 
+  "headers": {
+    "Accept": "*/*", 
+    "Accept-Encoding": "br, gzip, deflate", 
+    "Accept-Language": "*", 
+    "Host": "httpbin.org", 
+    "Sec-Fetch-Mode": "cors", 
+    "User-Agent": "node", 
+    "X-Amzn-Trace-Id": "Root=1-682a3112-4bbb29111129c1556c487ca1"
+  }, 
+  "json": null, 
+  "method": "GET", 
+  "origin": "23.96.180.7", 
+  "url": "https://httpbin.org/anything/My New Item"
+}
+
+```
+
+````
+
+</details>
 
 *(Note: `httpbin.org/post` wraps the JSON sent in a "json" field in its response. If your API returns the ID directly at the root of the JSON body, you'd use `{{responses.createItem.body.id}}` assuming the `createItem` request had the `json` option.)*
 
