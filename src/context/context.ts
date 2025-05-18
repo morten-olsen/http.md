@@ -10,6 +10,7 @@ type Response = {
   statusText: string;
   headers: Record<string, string>;
   body?: string;
+  rawBody?: string;
 };
 
 type AddRequestOptios = {

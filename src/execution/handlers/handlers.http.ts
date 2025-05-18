@@ -59,7 +59,8 @@ const httpHandler: ExecutionHandler = ({
         body
       });
 
-      let responseText = await response.text();
+      const rawBody = await response.text();
+      let responseText = rawBody;
       if (options.json) {
         try {
           responseText = JSON.parse(responseText);
@@ -84,6 +85,7 @@ const httpHandler: ExecutionHandler = ({
           statusText: response.statusText,
           headers: Object.fromEntries(response.headers.entries()),
           body: responseText,
+          rawBody: rawBody,
         },
       });
     },
