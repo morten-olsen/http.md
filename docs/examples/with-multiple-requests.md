@@ -2,7 +2,7 @@
 
 First, create a resource:
 
-```http #createUser,format=yaml
+```http #createUser,yaml,json
 POST https://httpbin.org/post
 Content-Type: application/json
 

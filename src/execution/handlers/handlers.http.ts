@@ -44,7 +44,7 @@ const httpHandler: ExecutionHandler = ({
       );
 
       let parsedBody = body;
-      if (options.format === 'yaml') {
+      if (options.yaml) {
         try {
           const parsed = YAML.parse(body);
           parsedBody = JSON.stringify(parsed);
