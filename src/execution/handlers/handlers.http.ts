@@ -16,6 +16,11 @@ const httpHandler: ExecutionHandler = ({
       return [key.trim(), value?.trim() || true];
     })
   );
+  let id = options.id?.toString();
+  const idPart = optionParts.find((option) => option.startsWith('#'));
+  if (idPart) {
+    id = idPart.slice(1);
+  }
 
   addStep({
     type: 'http',
@@ -66,7 +71,7 @@ const httpHandler: ExecutionHandler = ({
       node.meta = undefined;
 
       context.addRequest({
-        id: options.id?.toString(),
+        id,
         request: {
           method,
           url,
