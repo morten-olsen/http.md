@@ -1,0 +1,99 @@
+import { readFile } from 'node:fs/promises';
+import { Root } from "mdast";
+import remarkGfm from 'remark-gfm'
+import remarkParse from 'remark-parse'
+import remarkRehype from 'remark-rehype'
+import remarkDirective from 'remark-directive'
+import remarkStringify from 'remark-stringify'
+import { unified } from 'unified'
+import { visit } from 'unist-util-visit'
+
+import { Context } from "../context/context.js";
+import { handlers } from './handlers/handlers.js';
+
+const parser = unified()
+  .use(remarkParse)
+  .use(remarkGfm)
+  .use(remarkDirective)
+  .use(remarkStringify)
+  .use(remarkRehype);
+
+type BaseNode = {
+  type: string;
+  name?: string;
+  children?: BaseNode[];
+  attributes?: Record<string, string>;
+  meta?: string;
+  lang?: string;
+  value?: string;
+}
+
+type ExecutionStepOptions = {
+  file: string;
+  input?: {};
+  context: Context;
+  root: Root;
+  node: BaseNode;
+}
+
+type ExecutionStep = {
+  type: string;
+  node: BaseNode;
+  action: (options: ExecutionStepOptions) => Promise<void>;
+}
+
+type ExecutionHandler = (options: {
+  file: string;
+  addStep: (step: ExecutionStep) => void;
+  node: BaseNode;
+  parent?: BaseNode;
+  root: Root;
+  index?: number;
+}) => void;
+
+type ExexutionExecuteOptions = {
+  context: Context;
+}
+
+const execute = async (file: string, options: ExexutionExecuteOptions) => {
+  const { context } = options;
+  context.files.add(file);
+  const content = await readFile(file, 'utf-8');
+  const steps: Set<ExecutionStep> = new Set();
+
+  const root = parser.parse(content);
+
+  visit(root, (node, index, parent) => {
+    for (const handler of handlers) {
+      handler({
+        addStep: (step) => steps.add(step),
+        node: node as BaseNode,
+        root,
+        parent: parent as BaseNode | undefined,
+        index,
+        file,
+      });
+    }
+  });
+
+  for (const step of steps) {
+    const { node, action } = step;
+    const options: ExecutionStepOptions = {
+      file,
+      input: {},
+      context,
+      node,
+      root,
+    };
+    await action(options);
+  }
+
+  const markdown = parser.stringify(root);
+
+  return {
+    root,
+    markdown,
+  };
+}
+
+export { execute, type ExecutionHandler };
