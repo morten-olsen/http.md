@@ -20,7 +20,7 @@ env:
   IMAGE_NAME: ${{ github.repository }}
 
 permissions:
-  contents: read
+  contents: write
   packages: read
 
 jobs:
@@ -132,6 +132,6 @@ jobs:
           git config user.name "Github Actions Bot"
           git config user.email "<>"
           node ./scripts/set-version.mjs $(git describe --tag --abbrev=0)
-          pnpm publish --no-git-checks --access public
+          pnpm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
