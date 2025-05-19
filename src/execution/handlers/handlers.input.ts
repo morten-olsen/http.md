@@ -1,5 +1,6 @@
 import { toString } from 'mdast-util-to-string';
 import { type ExecutionHandler } from '../execution.js';
+import { ParsingError, RequiredError } from '../../utils/errors.js';
 
 const inputHandler: ExecutionHandler = ({
   addStep,
@@ -15,7 +16,7 @@ const inputHandler: ExecutionHandler = ({
         const name = toString(node);
 
         if (node.attributes?.required === '' && context.input[name] === undefined) {
-          throw new Error(`Input "${name}" is required`);
+          throw new RequiredError(name);
         }
 
         if (node.attributes?.default !== undefined && context.input[name] === undefined) {
@@ -27,7 +28,7 @@ const inputHandler: ExecutionHandler = ({
           if (format === 'number') {
             context.input[name] = Number(context.input[name]);
             if (context.input[name] !== undefined && isNaN(Number(context.input[name]))) {
-              throw new Error(`Input "${name}" must be a number, but got "${context.input[name]}"`);
+              throw new ParsingError(`Input "${name}" must be a number, but got "${context.input[name]}"`);
             }
           }
           if (format === 'boolean') {
@@ -40,14 +41,14 @@ const inputHandler: ExecutionHandler = ({
             try {
               context.input[name] = JSON.parse(String(context.input[name]));
             } catch (error) {
-              throw new Error(`Input "${name}" must be a valid JSON, but got "${context.input[name]}"`);
+              throw new ParsingError(`Input "${name}" must be a valid JSON, but got "${context.input[name]}"`);
             }
           }
 
           if (format === 'date') {
             const date = new Date(context.input[name] as string);
             if (isNaN(date.getTime())) {
-              throw new Error(`Input "${name}" must be a valid date, but got "${context.input[name]}"`);
+              throw new ParsingError(`Input "${name}" must be a valid date, but got "${context.input[name]}"`);
             }
             context.input[name] = date;
           }

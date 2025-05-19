@@ -3,6 +3,8 @@ import { Context } from '../../context/context.js';
 import { execute, type ExecutionHandler } from '../execution.js';
 import { dirname, resolve } from 'path';
 import { toString } from 'mdast-util-to-string';
+import { FileNotFoundError } from '../../utils/errors.js';
+import { existsSync } from 'fs';
 
 const rawMdHandler: ExecutionHandler = ({
   addStep,
@@ -20,6 +22,9 @@ const rawMdHandler: ExecutionHandler = ({
           dirname(file),
           toString(node),
         );
+        if (!existsSync(name)) {
+          throw new FileNotFoundError(name);
+        }
         const context = new Context({
           input: {},
         });

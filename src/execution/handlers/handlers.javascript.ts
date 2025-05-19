@@ -2,6 +2,7 @@ import Handlebars from "handlebars";
 import YAML from "yaml";
 import { should, expect, assert } from 'chai';
 import { ExecutionHandler } from "../execution.js";
+import { ScriptError } from "../../utils/errors.js";
 
 const javascriptHandler: ExecutionHandler = ({
   node,
@@ -60,7 +61,7 @@ const javascriptHandler: ExecutionHandler = ({
               meta: undefined,
             });
           }
-          throw error;
+          throw new ScriptError(error instanceof Error ? error.message : String(error))
         }
       }
       if (options.hidden === true && parent && index !== undefined) {

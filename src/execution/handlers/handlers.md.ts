@@ -1,6 +1,8 @@
 import { dirname, resolve } from 'path';
 import { toString } from 'mdast-util-to-string'
 import { execute, type ExecutionHandler } from '../execution.js';
+import { FileNotFoundError } from '../../utils/errors.js';
+import { existsSync } from 'fs';
 
 const fileHandler: ExecutionHandler = ({
   addStep,
@@ -18,8 +20,8 @@ const fileHandler: ExecutionHandler = ({
           dirname(file),
           toString(node)
         );
-        if (!filePath) {
-          throw new Error('File path is required');
+        if (!existsSync(filePath)) {
+          throw new FileNotFoundError(filePath);
         }
         const { root: newRoot } = await execute(filePath, {
           context,
