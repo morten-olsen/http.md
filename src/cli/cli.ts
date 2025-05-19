@@ -1,13 +1,14 @@
 import { program } from 'commander';
 import { resolve } from 'node:path';
-import { Marked } from 'marked';
-import { markedTerminal } from 'marked-terminal';
 import { execute } from '../execution/execution.js';
 import { Context } from '../context/context.js';
 import { writeFile } from 'node:fs/promises';
 import { Watcher } from '../watcher/watcher.js';
-import { UI } from './ui/ui.js';
 import { wrapBody } from '../theme/theme.html.js';
+import { loadInputFiles } from '../utils/input.js';
+import { InvalidFormatError } from '../utils/errors.js';
+import { renderUI, State } from './ui/ui.js';
+import { Marked } from 'marked';
 
 
 
@@ -16,23 +17,27 @@ program
   .argument('<name>', 'http.md file name')
   .description('Run a http.md document')
   .option('-w, --watch', 'watch for changes')
+  .option('-f, --file <file...>', 'input files (-f foo.js -f bar.json)')
   .option('-i, --input <input...>', 'input variables (-i foo=bar -i baz=qux)')
   .action(async (name, options) => {
-    const marked = new Marked();
-    marked.use(markedTerminal() as any);
     const {
+      file: f = [],
       watch = false,
       input: i = [],
     } = options;
 
-    const ui = new UI();
-
-    const input = Object.fromEntries(
-      i.map((item: string) => {
-        const [key, value] = item.split('=');
-        return [key, value];
-      })
-    );
+    const input = {
+      ...Object.fromEntries(
+        i.map((item: string) => {
+          const [key, value] = item.split('=');
+          return [key, value];
+        })
+      ),
+      ...loadInputFiles(f),
+    };
+    const state = new State<any>({
+      markdown: 'Loading',
+    });
     const filePath = resolve(process.cwd(), name);
 
     const build = async () => {
@@ -43,8 +48,10 @@ program
         context,
       });
 
-      const markdown = await marked.parse(result.markdown);
-      ui.content = markdown;
+      state.setState({
+        error: result.error ? result.error instanceof Error ? result.error.message : result.error : undefined,
+        markdown: result.markdown,
+      });
 
       return {
         ...result,
@@ -53,10 +60,7 @@ program
     }
 
     const result = await build();
-
-    ui.screen.key(['r'], () => {
-      build();
-    });
+    renderUI(state);
 
     if (watch) {
       const watcher = new Watcher();
@@ -75,23 +79,28 @@ program
   .argument('<name>', 'http.md file name')
   .argument('<output>', 'output file name')
   .description('Run a http.md document')
-  .option('-f, --format <format>', 'output format (html, markdown)')
+  .option('-f, --file <file...>', 'input files (-f foo.js -f bar.json)')
+  .option('--format <format>', 'output format (html, markdown)')
   .option('-w, --watch', 'watch for changes')
   .option('-i, --input <input...>', 'input variables (-i foo=bar -i baz=qux)')
   .action(async (name, output, options) => {
     const {
       watch = false,
+      file: f = [],
       input: i = [],
       format = 'markdown',
     } = options;
 
 
-    const input = Object.fromEntries(
-      i.map((item: string) => {
-        const [key, value] = item.split('=');
-        return [key, value];
-      })
-    );
+    const input = {
+      ...Object.fromEntries(
+        i.map((item: string) => {
+          const [key, value] = item.split('=');
+          return [key, value];
+        })
+      ),
+      ...loadInputFiles(f),
+    }
     const filePath = resolve(process.cwd(), name);
 
     const build = async () => {
@@ -102,6 +111,10 @@ program
         context,
       });
 
+      if (result.error) {
+        console.error(result.error);
+      }
+
       if (format === 'html') {
         const marked = new Marked();
         const html = await marked.parse(result.markdown);
@@ -109,7 +122,7 @@ program
       } else if (format === 'markdown') {
         await writeFile(output, result.markdown);
       } else {
-        throw new Error('Invalid format');
+        throw new InvalidFormatError('Invalid format');
       }
       return {
         ...result,
@@ -118,6 +131,10 @@ program
     }
 
     const result = await build();
+
+    if (result.error && !watch) {
+      process.exit(1);
+    }
 
     if (watch) {
       const watcher = new Watcher();

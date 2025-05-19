@@ -51,7 +51,7 @@ Create a file named `example.md`:
 
 ::raw-md[./examples/getting-started.md]
 
-### Rendering Documents
+### Rendering Document
 
 You have two primary ways to render your `http.md` file:
 

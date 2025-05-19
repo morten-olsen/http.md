@@ -28,9 +28,11 @@
     "@pnpm/find-workspace-packages": "^6.0.9",
     "@types/blessed": "^0.1.25",
     "@types/chai": "^5.2.2",
+    "@types/ink": "^2.0.3",
     "@types/marked-terminal": "^6.1.1",
     "@types/mdast": "^4.0.4",
     "@types/node": "^22.15.18",
+    "@types/react": "^18.3.12",
     "@types/terminal-kit": "^2.5.7",
     "tsx": "^4.19.4",
     "typescript": "^5.8.3"
@@ -44,11 +46,13 @@
     "eventemitter3": "^5.0.1",
     "handlebars": "^4.7.8",
     "hastscript": "^9.0.1",
+    "ink": "^5.2.1",
     "marked": "^15.0.11",
     "marked-terminal": "^7.3.0",
     "mdast-util-to-markdown": "^2.1.2",
     "mdast-util-to-string": "^4.0.0",
     "mdast-util-toc": "^7.1.0",
+    "react": "^18.3.1",
     "rehype-stringify": "^10.0.1",
     "remark-behead": "^3.1.0",
     "remark-directive": "^4.0.0",
@@ -59,6 +63,7 @@
     "terminal-kit": "^3.1.2",
     "unified": "^11.0.5",
     "unist-util-visit": "^5.0.0",
+    "wrap-ansi": "^9.0.0",
     "yaml": "^2.8.0"
   }
 }

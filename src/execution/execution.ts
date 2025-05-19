@@ -51,6 +51,7 @@ type ExexutionExecuteOptions = {
 }
 
 const execute = async (file: string, options: ExexutionExecuteOptions) => {
+  let error: unknown | undefined;
   const { context } = options;
   context.files.add(file);
   const content = await readFile(file, 'utf-8');
@@ -94,20 +95,26 @@ const execute = async (file: string, options: ExexutionExecuteOptions) => {
   });
 
   for (const step of steps) {
-    const { node, action } = step;
-    const options: ExecutionStepOptions = {
-      file,
-      input: {},
-      context,
-      node,
-      root,
-    };
-    await action(options);
+    try {
+      const { node, action } = step;
+      const options: ExecutionStepOptions = {
+        file,
+        input: {},
+        context,
+        node,
+        root,
+      };
+      await action(options);
+    } catch (e) {
+      error = e;
+      break;
+    }
   }
 
   const markdown = parser.stringify(root);
 
   return {
+    error,
     root,
     markdown,
   };
