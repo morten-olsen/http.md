@@ -38,7 +38,7 @@ It allows developers to create API documentation that is always accurate and up-
 * [Installation](#installation)
 * [Getting Started](#getting-started)
   * [Your First Request](#your-first-request)
-  * [Rendering Documents](#rendering-documents)
+  * [Rendering Document](#rendering-document)
 * [Core Concepts](#core-concepts)
   * [HTTP Request Blocks](#http-request-blocks)
   * [The `::response` Directive](#the-response-directive)
@@ -94,7 +94,7 @@ And here is the response:
 
 ````
 
-### Rendering Documents
+### Rendering Document
 
 You have two primary ways to render your `http.md` file:
 
@@ -149,9 +149,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 557
+content-length: 558
 content-type: application/json
-date: Mon, 19 May 2025 08:31:44 GMT
+date: Mon, 19 May 2025 14:23:24 GMT
 server: gunicorn/19.9.0
 
 {
@@ -168,12 +168,12 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682aec70-4f9d0a877f1453210a7009b6"
+    "X-Amzn-Trace-Id": "Root=1-682b3edc-1e6e4ce373832c8925a96017"
   }, 
   "json": {
     "greeting": "Hello, http.md!"
   }, 
-  "origin": "40.71.224.172", 
+  "origin": "20.236.119.125", 
   "url": "https://httpbin.org/post"
 }
 
@@ -288,9 +288,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 502
+content-length: 503
 content-type: application/json
-date: Mon, 19 May 2025 08:31:44 GMT
+date: Mon, 19 May 2025 14:23:24 GMT
 server: gunicorn/19.9.0
 
 {
@@ -307,10 +307,10 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org",
     "Sec-Fetch-Mode": "cors",
     "User-Agent": "node",
-    "X-Amzn-Trace-Id": "Root=1-682aec70-52423dd76328a4e37066ba0e"
+    "X-Amzn-Trace-Id": "Root=1-682b3edc-4e2ecf605646f8856ed8fb62"
   },
   "json": null,
-  "origin": "40.71.224.172",
+  "origin": "20.236.119.125",
   "url": "https://httpbin.org/post"
 }
 ```
@@ -322,9 +322,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 383
+content-length: 384
 content-type: application/json
-date: Mon, 19 May 2025 08:31:44 GMT
+date: Mon, 19 May 2025 14:23:25 GMT
 server: gunicorn/19.9.0
 
 {
@@ -338,9 +338,9 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682aec70-1509df0125913c7c042c1116"
+    "X-Amzn-Trace-Id": "Root=1-682b3edc-63188a636bbcddd71d66a9a9"
   }, 
-  "origin": "40.71.224.172", 
+  "origin": "20.236.119.125", 
   "url": "https://httpbin.org/get?item=123"
 }
 
@@ -436,9 +436,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 453
+content-length: 454
 content-type: application/json
-date: Mon, 19 May 2025 08:31:44 GMT
+date: Mon, 19 May 2025 14:23:32 GMT
 server: gunicorn/19.9.0
 
 {
@@ -453,11 +453,11 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682aec70-0086cbec627144c72e8dd560"
+    "X-Amzn-Trace-Id": "Root=1-682b3edf-02e1f60832842817408a7101"
   }, 
   "json": null, 
   "method": "GET", 
-  "origin": "40.71.224.172", 
+  "origin": "20.236.119.125", 
   "url": "https://httpbin.org/anything/My New Item"
 }
 
@@ -552,9 +552,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 642
+content-length: 643
 content-type: application/json
-date: Mon, 19 May 2025 08:31:44 GMT
+date: Mon, 19 May 2025 14:23:41 GMT
 server: gunicorn/19.9.0
 
 {
@@ -571,13 +571,13 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682aec70-2a4b678f42e2be503f693fd5"
+    "X-Amzn-Trace-Id": "Root=1-682b3ee6-44455a2003d5b30b006a3b64"
   }, 
   "json": {
     "dataFromMain": "someValue", 
     "sharedUrl": "https://httpbin.org/get"
   }, 
-  "origin": "40.71.224.172", 
+  "origin": "20.236.119.125", 
   "url": "https://httpbin.org/post"
 }
 
