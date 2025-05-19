@@ -211,7 +211,7 @@ _(Note: `httpbin.org/post` wraps the JSON sent in a "json" field in its response
 GET https://httpbin.org/status/201
 ```
 
-The request to `/status/201` completed with status code: **{{response.status}}**.
+The request to `/status/201` completed with status code: **{{{{response.status}}}}**.
 ````
 
 ## Managing Documents
@@ -259,14 +259,41 @@ http.md build mydoc.md output.md -i baseUrl=https://api.production.example.com -
 
 ````markdown
 ```http
-GET {{input.baseUrl}}/users/1
-Authorization: Bearer {{input.apiKey}}
+GET {{{{input.baseUrl}}}}/users/1
+Authorization: Bearer {{{{input.apiKey}}}}
 ```
 
 ::response
 ````
 
 **Security Note:** For sensitive data like API keys, using input variables is highly recommended over hardcoding them in your markdown files. Avoid committing files with plaintext secrets; instead, provide them at runtime via the CLI.
+
+### JavaScript Execution
+
+You can execute `javascript` blocks by adding a `run` option which allows programmatically changing the context, making request assertions and solve other more advanced use cases
+
+**Example:**
+
+::raw-md[./examples/with-javascript.md]
+
+<details>
+  <summary>Output</summary>
+
+::raw-md[./examples/with-javascript.md]{run}
+
+</details>
+
+**Options:**
+
+- `run`: If present the code block will be executed
+
+  - Example: ` ```javascript run `
+
+- `hidden`: If present the code block will not be included in the resulting output
+
+  - Example: ` ```javascript hidden `
+
+- `output`: If present the code blocks return value will be rendered as a `yaml` code block
 
 ### HTTP Block Configuration Options
 
@@ -309,8 +336,8 @@ You can configure the behavior of each `http` code block by adding options to it
 
 ````markdown
 ```http id=complexRequest,json,yaml,hidden
-POST {{input.apiEndpoint}}/data
-X-API-Key: {{input.apiKey}}
+POST {{{{input.apiEndpoint}}}}/data
+X-API-Key: {{{{input.apiKey}}}}
 Content-Type: application/json
 
 # Request body written in YAML, will be converted to JSON
