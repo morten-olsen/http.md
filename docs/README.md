@@ -21,6 +21,14 @@ It allows developers to create API documentation that is always accurate and up-
 - **Tutorials & Guides:** Build step-by-step guides where each HTTP interaction is shown with its real output.
 - **Rapid Prototyping:** Quickly experiment with APIs and document your findings.
 
+## Roadmap
+
+- **Programmatic API** Use `http.md` inside existing scripts and pipelines
+- **Environment Varaiables** Support using the runners environment variables in templates
+- **JavaScript script support** Add JavaScript code blocks with execution, which will allow more advanced use-cases
+- **Asserts** Add the ability to make HTTP assertions to use the document for testing
+- **Templates** Write re-usable templates which can be used in documents
+
 ## Content
 
 ::toc
