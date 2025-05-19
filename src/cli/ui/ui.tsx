@@ -1,8 +1,8 @@
-import { Box, render, Text, useApp, useInput } from "ink"
+import { Box, render, Text, useApp, useInput } from 'ink';
 import { ScrollableMarkdown } from './components/scrollable-markdown.js';
 import { useStateValue, State, StateProvider } from './state/state.js';
-import { useEffect, useState } from "react";
-import { useTerminalHeight } from "./hooks/terminal.js";
+import { useEffect } from 'react';
+import { useTerminalHeight } from './hooks/terminal.js';
 
 const MarkdownView = () => {
   const markdown = useStateValue((state) => state.markdown);
@@ -20,7 +20,7 @@ const MarkdownView = () => {
       )}
     </Box>
   );
-}
+};
 
 const App = () => {
   const { exit } = useApp();
@@ -30,22 +30,20 @@ const App = () => {
       process.exit(0);
     }
   });
-  useEffect(
-    () => {
-      const enterAltScreenCommand = "\x1b[?1049h";
-      const leaveAltScreenCommand = "\x1b[?1049l";
-      process.stdout.write(enterAltScreenCommand);
-      const onExit = () => {
-        exit();
-        process.stdout.write(leaveAltScreenCommand);
-      }
-      process.on("exit", onExit);
-      return () => {
-        process.stdout.write(leaveAltScreenCommand);
-        process.off("exit", onExit);
-      }
-    }, []
-  );
+  useEffect(() => {
+    const enterAltScreenCommand = '\x1b[?1049h';
+    const leaveAltScreenCommand = '\x1b[?1049l';
+    process.stdout.write(enterAltScreenCommand);
+    const onExit = () => {
+      exit();
+      process.stdout.write(leaveAltScreenCommand);
+    };
+    process.on('exit', onExit);
+    return () => {
+      process.stdout.write(leaveAltScreenCommand);
+      process.off('exit', onExit);
+    };
+  }, []);
 
   return (
     <Box height={height} flexDirection="column">
@@ -54,16 +52,15 @@ const App = () => {
         <Text>Press esc to exit</Text>
       </Box>
     </Box>
-  )
-}
+  );
+};
 
-const renderUI = (state: State) => {
-
+const renderUI = (state: State<ExpectedAny>) => {
   render(
     <StateProvider state={state}>
       <App />
-    </StateProvider>
+    </StateProvider>,
   );
-}
+};
 
-export { renderUI, State }
+export { renderUI, State };

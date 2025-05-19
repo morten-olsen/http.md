@@ -1,16 +1,17 @@
-import { program } from 'commander';
 import { resolve } from 'node:path';
-import { execute } from '../execution/execution.js';
-import { Context } from '../context/context.js';
 import { writeFile } from 'node:fs/promises';
-import { Watcher } from '../watcher/watcher.js';
-import { wrapBody } from '../theme/theme.html.js';
-import { loadInputFiles } from '../utils/input.js';
-import { InvalidFormatError } from '../utils/errors.js';
-import { renderUI, State } from './ui/ui.js';
+
+import { program } from 'commander';
 import { Marked } from 'marked';
 
+import { execute } from '../execution/execution.js';
+import { Context } from '../context/context.js';
+import { Watcher } from '../watcher/watcher.js';
+import { wrapBody } from '../theme/theme.html.js';
+import { InvalidFormatError } from '../utils/errors.js';
 
+import { loadInputFiles } from './utils/input.js';
+import { renderUI, State } from './ui/ui.js';
 
 program
   .command('dev')
@@ -20,22 +21,18 @@ program
   .option('-f, --file <file...>', 'input files (-f foo.js -f bar.json)')
   .option('-i, --input <input...>', 'input variables (-i foo=bar -i baz=qux)')
   .action(async (name, options) => {
-    const {
-      file: f = [],
-      watch = false,
-      input: i = [],
-    } = options;
+    const { file: f = [], watch = false, input: i = [] } = options;
 
     const input = {
       ...Object.fromEntries(
         i.map((item: string) => {
           const [key, value] = item.split('=');
           return [key, value];
-        })
+        }),
       ),
       ...loadInputFiles(f),
     };
-    const state = new State<any>({
+    const state = new State<ExpectedAny>({
       markdown: 'Loading',
     });
     const filePath = resolve(process.cwd(), name);
@@ -43,21 +40,21 @@ program
     const build = async () => {
       const context = new Context({
         input,
-      })
+      });
       const result = await execute(filePath, {
         context,
       });
 
       state.setState({
-        error: result.error ? result.error instanceof Error ? result.error.message : result.error : undefined,
+        error: result.error ? (result.error instanceof Error ? result.error.message : result.error) : undefined,
         markdown: result.markdown,
       });
 
       return {
         ...result,
         context,
-      }
-    }
+      };
+    };
 
     const result = await build();
     renderUI(state);
@@ -84,29 +81,23 @@ program
   .option('-w, --watch', 'watch for changes')
   .option('-i, --input <input...>', 'input variables (-i foo=bar -i baz=qux)')
   .action(async (name, output, options) => {
-    const {
-      watch = false,
-      file: f = [],
-      input: i = [],
-      format = 'markdown',
-    } = options;
-
+    const { watch = false, file: f = [], input: i = [], format = 'markdown' } = options;
 
     const input = {
       ...Object.fromEntries(
         i.map((item: string) => {
           const [key, value] = item.split('=');
           return [key, value];
-        })
+        }),
       ),
       ...loadInputFiles(f),
-    }
+    };
     const filePath = resolve(process.cwd(), name);
 
     const build = async () => {
       const context = new Context({
         input,
-      })
+      });
       const result = await execute(filePath, {
         context,
       });
@@ -127,8 +118,8 @@ program
       return {
         ...result,
         context,
-      }
-    }
+      };
+    };
 
     const result = await build();
 

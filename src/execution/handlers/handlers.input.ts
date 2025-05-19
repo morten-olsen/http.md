@@ -1,13 +1,9 @@
 import { toString } from 'mdast-util-to-string';
+
 import { type ExecutionHandler } from '../execution.js';
 import { ParsingError, RequiredError } from '../../utils/errors.js';
 
-const inputHandler: ExecutionHandler = ({
-  addStep,
-  node,
-  parent,
-  index,
-}) => {
+const inputHandler: ExecutionHandler = ({ addStep, node, parent, index }) => {
   if (node.type === 'leafDirective' && node.name === 'input') {
     addStep({
       type: 'input',
@@ -40,6 +36,7 @@ const inputHandler: ExecutionHandler = ({
           if (format === 'json') {
             try {
               context.input[name] = JSON.parse(String(context.input[name]));
+              /* eslint-disable-next-line @typescript-eslint/no-unused-vars */
             } catch (error) {
               throw new ParsingError(`Input "${name}" must be a valid JSON, but got "${context.input[name]}"`);
             }
@@ -68,14 +65,10 @@ const inputHandler: ExecutionHandler = ({
           value: `${name}=${context.input[name] ?? '[undefined]'}`,
         };
 
-        parent.children?.splice(
-          index,
-          1,
-          newNode as any,
-        );
+        parent.children?.splice(index, 1, newNode as ExpectedAny);
       },
-    })
+    });
   }
-}
+};
 
 export { inputHandler };

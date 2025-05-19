@@ -1,25 +1,18 @@
 import { dirname, resolve } from 'path';
-import { toString } from 'mdast-util-to-string'
-import { execute, type ExecutionHandler } from '../execution.js';
-import { FileNotFoundError } from '../../utils/errors.js';
 import { existsSync } from 'fs';
 
-const fileHandler: ExecutionHandler = ({
-  addStep,
-  node,
-  parent,
-  index,
-  file,
-}) => {
+import { toString } from 'mdast-util-to-string';
+
+import { execute, type ExecutionHandler } from '../execution.js';
+import { FileNotFoundError } from '../../utils/errors.js';
+
+const fileHandler: ExecutionHandler = ({ addStep, node, parent, index, file }) => {
   if (node.type === 'leafDirective' && node.name === 'md') {
     addStep({
       type: 'file',
       node,
       action: async ({ context }) => {
-        const filePath = resolve(
-          dirname(file),
-          toString(node)
-        );
+        const filePath = resolve(dirname(file), toString(node));
         if (!existsSync(filePath)) {
           throw new FileNotFoundError(filePath);
         }
@@ -37,10 +30,10 @@ const fileHandler: ExecutionHandler = ({
           parent.children?.splice(index, 1);
           return;
         }
-        parent.children?.splice(index, 1, ...newRoot.children as any);
+        parent.children?.splice(index, 1, ...(newRoot.children as ExpectedAny[]));
       },
-    })
+    });
   }
-}
+};
 
 export { fileHandler };

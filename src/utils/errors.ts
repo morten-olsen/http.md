@@ -12,8 +12,15 @@ class FileNotFoundError extends BaseError {
 }
 
 class InvalidFileError extends BaseError {
-  constructor(filePath: string) {
+  #baseError?: unknown;
+
+  constructor(filePath: string, baseError?: unknown) {
     super(`Invalid file: ${filePath}`);
+    this.#baseError = baseError;
+  }
+
+  get baseError() {
+    return this.#baseError;
   }
 }
 

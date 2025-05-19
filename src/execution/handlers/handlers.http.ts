@@ -1,11 +1,9 @@
-import Handlebars from "handlebars";
-import YAML from "yaml";
-import { ExecutionHandler } from "../execution.js";
+import Handlebars from 'handlebars';
+import YAML from 'yaml';
 
-const httpHandler: ExecutionHandler = ({
-  node,
-  addStep,
-}) => {
+import { ExecutionHandler } from '../execution.js';
+
+const httpHandler: ExecutionHandler = ({ node, addStep }) => {
   if (node.type !== 'code' || node.lang !== 'http') {
     return;
   }
@@ -14,7 +12,7 @@ const httpHandler: ExecutionHandler = ({
     optionParts.filter(Boolean).map((option) => {
       const [key, value] = option.split('=');
       return [key.trim(), value?.trim() || true];
-    })
+    }),
   );
   let id = options.id?.toString();
   const idPart = optionParts.find((option) => option.startsWith('#'));
@@ -40,7 +38,7 @@ const httpHandler: ExecutionHandler = ({
         headerItems.map((header) => {
           const [key, value] = header.split(':');
           return [key.trim(), value?.trim() || ''];
-        })
+        }),
       );
 
       let parsedBody = body;
@@ -56,7 +54,7 @@ const httpHandler: ExecutionHandler = ({
       const response = await fetch(url, {
         method,
         headers,
-        body
+        body,
       });
 
       const rawBody = await response.text();

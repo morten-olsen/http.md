@@ -1,10 +1,8 @@
-import { type ExecutionHandler } from '../execution.js';
-import Handlebars from "handlebars";
+import Handlebars from 'handlebars';
 
-const textHandler: ExecutionHandler = ({
-  addStep,
-  node,
-}) => {
+import { type ExecutionHandler } from '../execution.js';
+
+const textHandler: ExecutionHandler = ({ addStep, node }) => {
   if (node.type === 'text') {
     addStep({
       type: 'parse-text',
@@ -14,8 +12,8 @@ const textHandler: ExecutionHandler = ({
         const content = template(context);
         node.value = content;
       },
-    })
+    });
   }
-}
+};
 
 export { textHandler };

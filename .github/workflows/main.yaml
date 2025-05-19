@@ -12,9 +12,9 @@ on:
 env:
   environment: test
   release_channel: latest
-  DO_NOT_TRACK: "1"
-  NODE_VERSION: "23.x"
-  NODE_REGISTRY: "https://registry.npmjs.org"
+  DO_NOT_TRACK: '1'
+  NODE_VERSION: '23.x'
+  NODE_REGISTRY: 'https://registry.npmjs.org'
   NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
   DOCKER_REGISTRY: ghcr.io
   IMAGE_NAME: ${{ github.repository }}
@@ -22,6 +22,7 @@ env:
 permissions:
   contents: read
   packages: read
+  pull-requests: write
 
 jobs:
   build:
@@ -32,8 +33,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "${{ env.NODE_VERSION }}"
-          registry-url: "${{ env.NODE_REGISTRY }}"
+          node-version: '${{ env.NODE_VERSION }}'
+          registry-url: '${{ env.NODE_REGISTRY }}'
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -62,8 +63,12 @@ jobs:
       - name: Build
         run: pnpm build
 
-      # - name: Run tests
-      #   run: pnpm test
+      - name: Run tests
+        run: pnpm test
+
+      - name: 'Report Coverage'
+        if: always()
+        uses: davelosert/vitest-coverage-report-action@v2
 
       - uses: actions/upload-artifact@v4
         with:
@@ -109,8 +114,8 @@ jobs:
 
       - uses: actions/setup-node@v4
         with:
-          node-version: "${{ env.NODE_VERSION }}"
-          registry-url: "${{ env.NODE_REGISTRY }}"
+          node-version: '${{ env.NODE_VERSION }}'
+          registry-url: '${{ env.NODE_REGISTRY }}'
 
       - uses: pnpm/action-setup@v4
         name: Install pnpm
@@ -138,5 +143,5 @@ jobs:
 
       - uses: stefanzweifel/git-auto-commit-action@v5
         with:
-          commit_message: "docs: generated README"
-          file_pattern: "*.md"
+          commit_message: 'docs: generated README'
+          file_pattern: '*.md'

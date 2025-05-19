@@ -17,7 +17,7 @@ type AddRequestOptios = {
   request: Request;
   response: Response;
   id?: string;
-}
+};
 
 type ContextOptions = {
   input?: Record<string, unknown>;
@@ -29,7 +29,7 @@ type ContextOptions = {
 class Context {
   input: Record<string, unknown> = {};
   env: Record<string, unknown> = {};
-  files: Set<string> = new Set();
+  files = new Set<string>();
   requests: Record<string, Request> = {};
   responses: Record<string, Response> = {};
   request?: Request;
