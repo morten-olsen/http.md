@@ -1,11 +1,11 @@
 {
-  "name": "@morten-olsen/httpmd",
+  "name": "@morten-olsen/http.md",
   "version": "1.0.0",
   "description": "",
   "main": "dist/exports.js",
   "type": "module",
   "bin": {
-    "httpmd": "./bin/cli.mjs"
+    "http.md": "./bin/cli.mjs"
   },
   "files": [
     "dist",

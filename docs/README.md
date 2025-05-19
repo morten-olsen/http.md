@@ -30,7 +30,7 @@ It allows developers to create API documentation that is always accurate and up-
 Install `http.md` globally using npm:
 
 ```shell
-npm i -g @morten-olsen/httpmd
+npm i -g @morten-olsen/http.md
 ```
 
 ## Getting Started
@@ -51,13 +51,13 @@ You have two primary ways to render your `http.md` file:
     For a development server that outputs to your terminal and watches for changes:
 
     ```shell
-    httpmd dev example.md
+    http.md dev example.md
     ```
 
     With watch mode:
 
     ```shell
-    httpmd dev --watch example.md
+    http.md dev --watch example.md
     ```
 
     This command will process `example.md`, execute the HTTP requests, and print the resulting markdown (with responses filled in) to the terminal. With `--watch`, any changes to `example.md` will trigger a re-run.
@@ -66,13 +66,13 @@ You have two primary ways to render your `http.md` file:
     To generate a new markdown file with the responses and templated values rendered:
 
     ```shell
-    httpmd build example.md output.md
+    http.md build example.md output.md
     ```
 
     With watch mode:
 
     ```shell
-    httpmd build --watch example.md output.md
+    http.md build --watch example.md output.md
     ```
 
     This creates `output.md`, which is a static snapshot of `example.md` after all requests have been executed and templating applied. This file is suitable for version control, sharing, or integration with static site generators.
@@ -179,7 +179,7 @@ Within your markdown document, the following variables are available in the Hand
 
 - **`input`** (Object): A dictionary of variables passed to `http.md` via the command line using the `-i` or `--input` flag.
 
-  - Example: If you run `httpmd dev -i userId=123 -i apiKey=secret myfile.md`, you can use `{{input.userId}}` and `{{input.apiKey}}`.
+  - Example: If you run `http.md dev -i userId=123 -i apiKey=secret myfile.md`, you can use `{{input.userId}}` and `{{input.apiKey}}`.
 
 ### Templating Examples
 
@@ -244,7 +244,7 @@ You can pass external data into your `http.md` documents using the `-i` (or `--i
 **CLI Command:**
 
 ```shell
-httpmd build mydoc.md output.md -i baseUrl=https://api.production.example.com -i apiKey=YOUR_SECRET_KEY
+http.md build mydoc.md output.md -i baseUrl=https://api.production.example.com -i apiKey=YOUR_SECRET_KEY
 ```
 
 **Markdown Usage (`mydoc.md`):**
@@ -353,9 +353,9 @@ The `::input` directive is used to declare expected input variables
 
 ## Command-Line Interface (CLI)
 
-The `httpmd` tool provides the following commands:
+The `http.md` tool provides the following commands:
 
-### `httpmd dev <source_file.md>`
+### `http.md dev <source_file.md>`
 
 Processes the `<source_file.md>`, executes all HTTP requests, resolves templates, and prints the resulting markdown to the **terminal (stdout)**.
 
@@ -367,10 +367,10 @@ Processes the `<source_file.md>`, executes all HTTP requests, resolves templates
 **Example:**
 
 ```shell
-httpmd dev api_tests.md --watch -i host=localhost:3000
+http.md dev api_tests.md --watch -i host=localhost:3000
 ```
 
-### `httpmd build <source_file.md> <output_file.md>`
+### `http.md build <source_file.md> <output_file.md>`
 
 Processes the `<source_file.md>`, executes all HTTP requests, resolves templates, and saves the resulting markdown to `<output_file.md>`.
 
@@ -382,5 +382,5 @@ Processes the `<source_file.md>`, executes all HTTP requests, resolves templates
 **Example:**
 
 ```shell
-httpmd build official_api_docs.md public/api_docs_v1.md -i version=v1.0
+http.md build official_api_docs.md public/api_docs_v1.md -i version=v1.0
 ```
