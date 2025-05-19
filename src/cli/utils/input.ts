@@ -1,5 +1,5 @@
 import { extname } from "path";
-import { FileNotFoundError, InvalidFileError } from "./errors.js";
+import { FileNotFoundError, InvalidFileError } from "../../utils/errors.js";
 import { existsSync } from "fs";
 import YAML from "yaml";
 import { readFile } from "fs/promises";

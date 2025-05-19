@@ -5,7 +5,7 @@ import { Context } from '../context/context.js';
 import { writeFile } from 'node:fs/promises';
 import { Watcher } from '../watcher/watcher.js';
 import { wrapBody } from '../theme/theme.html.js';
-import { loadInputFiles } from '../utils/input.js';
+import { loadInputFiles } from './utils/input.js';
 import { InvalidFormatError } from '../utils/errors.js';
 import { renderUI, State } from './ui/ui.js';
 import { Marked } from 'marked';
