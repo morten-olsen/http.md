@@ -5,7 +5,7 @@ const codeHandler: ExecutionHandler = ({
   node,
   addStep,
 }) => {
-  if (node.type !== 'code' || node.lang === 'http') {
+  if (node.type !== 'code' || node.lang === 'http' || node.lang === 'javascript') {
     return;
   }
   const optionParts = node.meta?.split(',') || [];

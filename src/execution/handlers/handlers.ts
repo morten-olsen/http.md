@@ -7,6 +7,7 @@ import { responseHandler } from "./handlers.response.js";
 import { textHandler } from "./handlers.text.js";
 import { codeHandler } from "./handlers.code.js";
 import { tocHandler } from "./handlers.toc.js";
+import { javascriptHandler } from "./handlers.javascript.js";
 
 const handlers = [
   fileHandler,
@@ -16,6 +17,7 @@ const handlers = [
   inputHandler,
   rawMdHandler,
   codeHandler,
+  javascriptHandler,
 ] satisfies ExecutionHandler[];
 
 const postHandlers = [
