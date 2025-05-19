@@ -1,19 +1,14 @@
 import YAML from 'yaml';
+
 import { type ExecutionHandler } from '../execution.js';
 
-const responseHandler: ExecutionHandler = ({
-  addStep,
-  node,
-  parent,
-  index,
-}) => {
+const responseHandler: ExecutionHandler = ({ addStep, node, parent, index }) => {
   if (node.type === 'leafDirective' && node.name === 'response') {
     addStep({
       type: 'file',
       node,
       action: async ({ context }) => {
-        const response = node.attributes?.id ?
-          context.responses[node.attributes.id] : context.response
+        const response = node.attributes?.id ? context.responses[node.attributes.id] : context.response;
 
         if (!response) {
           return;
@@ -60,14 +55,10 @@ const responseHandler: ExecutionHandler = ({
           throw new Error('Parent node is required');
         }
 
-        parent.children?.splice(
-          index,
-          1,
-          codeNode as any,
-        );
+        parent.children?.splice(index, 1, codeNode as ExpectedAny);
       },
-    })
+    });
   }
-}
+};
 
 export { responseHandler };

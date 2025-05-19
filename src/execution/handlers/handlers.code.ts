@@ -1,10 +1,8 @@
-import Handlebars from "handlebars";
-import { ExecutionHandler } from "../execution.js";
+import Handlebars from 'handlebars';
 
-const codeHandler: ExecutionHandler = ({
-  node,
-  addStep,
-}) => {
+import { ExecutionHandler } from '../execution.js';
+
+const codeHandler: ExecutionHandler = ({ node, addStep }) => {
   if (node.type !== 'code' || node.lang === 'http' || node.lang === 'javascript') {
     return;
   }
@@ -13,7 +11,7 @@ const codeHandler: ExecutionHandler = ({
     optionParts.filter(Boolean).map((option) => {
       const [key, value] = option.split('=');
       return [key.trim(), value?.trim() || true];
-    })
+    }),
   );
 
   addStep({

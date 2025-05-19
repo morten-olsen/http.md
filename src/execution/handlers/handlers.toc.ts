@@ -1,13 +1,8 @@
 import { toc } from 'mdast-util-toc';
+
 import { type ExecutionHandler } from '../execution.js';
 
-const tocHandler: ExecutionHandler = ({
-  addStep,
-  node,
-  root,
-  parent,
-  index,
-}) => {
+const tocHandler: ExecutionHandler = ({ addStep, node, root, parent, index }) => {
   if (node.type === 'leafDirective' && node.name === 'toc') {
     addStep({
       type: 'toc',
@@ -16,14 +11,14 @@ const tocHandler: ExecutionHandler = ({
         const result = toc(root, {
           tight: true,
           minDepth: 2,
-        })
+        });
         if (!parent || !parent.children || index === undefined) {
           throw new Error('Parent node is not valid');
         }
-        parent.children.splice(index, 1, result.map as any);
+        parent.children.splice(index, 1, result.map as ExpectedAny);
       },
-    })
+    });
   }
-}
+};
 
 export { tocHandler };

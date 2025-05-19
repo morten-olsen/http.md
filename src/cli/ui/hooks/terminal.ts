@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react"
+import { useEffect, useState } from 'react';
 
 const useTerminalWidth = () => {
   const [width, setWidth] = useState(process.stdout.columns || 80);
@@ -8,15 +8,15 @@ const useTerminalWidth = () => {
       setWidth(process.stdout.columns);
     };
 
-    process.stdout.on("resize", handleResize);
+    process.stdout.on('resize', handleResize);
 
     return () => {
-      process.stdout.off("resize", handleResize);
+      process.stdout.off('resize', handleResize);
     };
   }, []);
 
   return width;
-}
+};
 
 const useTerminalHeight = () => {
   const [height, setHeight] = useState(process.stdout.rows || 24);
@@ -26,14 +26,14 @@ const useTerminalHeight = () => {
       setHeight(process.stdout.rows);
     };
 
-    process.stdout.on("resize", handleResize);
+    process.stdout.on('resize', handleResize);
 
     return () => {
-      process.stdout.off("resize", handleResize);
+      process.stdout.off('resize', handleResize);
     };
   }, []);
 
   return height;
-}
+};
 
-export { useTerminalWidth, useTerminalHeight }
+export { useTerminalWidth, useTerminalHeight };

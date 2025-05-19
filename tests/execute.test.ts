@@ -1,21 +1,19 @@
-import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest';
-import { Context, execute } from '../src/exports.js';
 import { resolve } from 'path';
-import { server } from './mocks/node.js'
+
+import { describe, it, expect, beforeAll, afterEach, afterAll } from 'vitest';
+
+import { Context, execute } from '../src/exports.js';
+
+import { server } from './mocks/node.js';
 
 describe('execute', () => {
-  beforeAll(() => server.listen())
-  afterEach(() => server.resetHandlers())
-  afterAll(() => server.close())
+  beforeAll(() => server.listen());
+  afterEach(() => server.resetHandlers());
+  afterAll(() => server.close());
 
   it('should correctly render the readme file', async () => {
     const context = new Context();
-    const filePath = resolve(
-      __dirname,
-      '..',
-      'docs',
-      'README.md'
-    )
+    const filePath = resolve(__dirname, '..', 'docs', 'README.md');
     const result = await execute(filePath, {
       context,
     });

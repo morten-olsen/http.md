@@ -1,15 +1,17 @@
 import { readFile } from 'node:fs/promises';
-import { Root } from "mdast";
-import remarkGfm from 'remark-gfm'
-import remarkParse from 'remark-parse'
-import remarkRehype from 'remark-rehype'
-import remarkDirective from 'remark-directive'
-import remarkStringify from 'remark-stringify'
-import behead from 'remark-behead';
-import { unified } from 'unified'
-import { visit } from 'unist-util-visit'
 
-import { Context } from "../context/context.js";
+import { Root } from 'mdast';
+import remarkGfm from 'remark-gfm';
+import remarkParse from 'remark-parse';
+import remarkRehype from 'remark-rehype';
+import remarkDirective from 'remark-directive';
+import remarkStringify from 'remark-stringify';
+import behead from 'remark-behead';
+import { unified } from 'unified';
+import { visit } from 'unist-util-visit';
+
+import { Context } from '../context/context.js';
+
 import { handlers, postHandlers } from './handlers/handlers.js';
 
 type BaseNode = {
@@ -20,21 +22,21 @@ type BaseNode = {
   meta?: string;
   lang?: string;
   value?: string;
-}
+};
 
 type ExecutionStepOptions = {
   file: string;
-  input?: {};
+  input?: Record<string, unknown>;
   context: Context;
   root: Root;
   node: BaseNode;
-}
+};
 
 type ExecutionStep = {
   type: string;
   node: BaseNode;
   action: (options: ExecutionStepOptions) => Promise<void>;
-}
+};
 
 type ExecutionHandler = (options: {
   file: string;
@@ -48,15 +50,14 @@ type ExecutionHandler = (options: {
 type ExexutionExecuteOptions = {
   context: Context;
   behead?: number;
-}
+};
 
 const execute = async (file: string, options: ExexutionExecuteOptions) => {
   let error: unknown | undefined;
   const { context } = options;
   context.files.add(file);
   const content = await readFile(file, 'utf-8');
-  const steps: Set<ExecutionStep> = new Set();
-
+  const steps = new Set<ExecutionStep>();
 
   const parser = unified()
     .use(remarkParse)
@@ -118,6 +119,6 @@ const execute = async (file: string, options: ExexutionExecuteOptions) => {
     root,
     markdown,
   };
-}
+};
 
 export { execute, type ExecutionHandler };
