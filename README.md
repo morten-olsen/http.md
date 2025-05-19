@@ -50,6 +50,7 @@ It allows developers to create API documentation that is always accurate and up-
   * [Embedding Other Documents (`::md`)](#embedding-other-documents-md)
 * [Advanced Usage](#advanced-usage)
   * [Using Input Variables](#using-input-variables)
+  * [JavaScript Execution](#javascript-execution)
   * [HTTP Block Configuration Options](#http-block-configuration-options)
   * [Directive Options](#directive-options)
     * [`::response` Directive Options](#response-directive-options)
@@ -148,9 +149,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 559
+content-length: 557
 content-type: application/json
-date: Mon, 19 May 2025 07:15:17 GMT
+date: Mon, 19 May 2025 08:31:44 GMT
 server: gunicorn/19.9.0
 
 {
@@ -167,12 +168,12 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682ada85-516dfea550431bd2238aa456"
+    "X-Amzn-Trace-Id": "Root=1-682aec70-4f9d0a877f1453210a7009b6"
   }, 
   "json": {
     "greeting": "Hello, http.md!"
   }, 
-  "origin": "172.214.199.239", 
+  "origin": "40.71.224.172", 
   "url": "https://httpbin.org/post"
 }
 
@@ -287,9 +288,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 504
+content-length: 502
 content-type: application/json
-date: Mon, 19 May 2025 07:15:18 GMT
+date: Mon, 19 May 2025 08:31:44 GMT
 server: gunicorn/19.9.0
 
 {
@@ -306,10 +307,10 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org",
     "Sec-Fetch-Mode": "cors",
     "User-Agent": "node",
-    "X-Amzn-Trace-Id": "Root=1-682ada85-5841d69c253c03e450c0cfc8"
+    "X-Amzn-Trace-Id": "Root=1-682aec70-52423dd76328a4e37066ba0e"
   },
   "json": null,
-  "origin": "172.214.199.239",
+  "origin": "40.71.224.172",
   "url": "https://httpbin.org/post"
 }
 ```
@@ -321,9 +322,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 385
+content-length: 383
 content-type: application/json
-date: Mon, 19 May 2025 07:15:18 GMT
+date: Mon, 19 May 2025 08:31:44 GMT
 server: gunicorn/19.9.0
 
 {
@@ -337,9 +338,9 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682ada86-50ccd79351313f742de31921"
+    "X-Amzn-Trace-Id": "Root=1-682aec70-1509df0125913c7c042c1116"
   }, 
-  "origin": "172.214.199.239", 
+  "origin": "40.71.224.172", 
   "url": "https://httpbin.org/get?item=123"
 }
 
@@ -435,9 +436,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 455
+content-length: 453
 content-type: application/json
-date: Mon, 19 May 2025 07:15:18 GMT
+date: Mon, 19 May 2025 08:31:44 GMT
 server: gunicorn/19.9.0
 
 {
@@ -452,11 +453,11 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682ada86-5c212bfd7fd8d81a7749fe52"
+    "X-Amzn-Trace-Id": "Root=1-682aec70-0086cbec627144c72e8dd560"
   }, 
   "json": null, 
   "method": "GET", 
-  "origin": "172.214.199.239", 
+  "origin": "40.71.224.172", 
   "url": "https://httpbin.org/anything/My New Item"
 }
 
@@ -551,9 +552,9 @@ HTTP/200 OK
 access-control-allow-credentials: true
 access-control-allow-origin: *
 connection: keep-alive
-content-length: 644
+content-length: 642
 content-type: application/json
-date: Mon, 19 May 2025 07:15:18 GMT
+date: Mon, 19 May 2025 08:31:44 GMT
 server: gunicorn/19.9.0
 
 {
@@ -570,13 +571,13 @@ server: gunicorn/19.9.0
     "Host": "httpbin.org", 
     "Sec-Fetch-Mode": "cors", 
     "User-Agent": "node", 
-    "X-Amzn-Trace-Id": "Root=1-682ada86-4c99fed83b21605713289d8a"
+    "X-Amzn-Trace-Id": "Root=1-682aec70-2a4b678f42e2be503f693fd5"
   }, 
   "json": {
     "dataFromMain": "someValue", 
     "sharedUrl": "https://httpbin.org/get"
   }, 
-  "origin": "172.214.199.239", 
+  "origin": "40.71.224.172", 
   "url": "https://httpbin.org/post"
 }
 
@@ -612,6 +613,68 @@ Authorization: Bearer
 ````
 
 **Security Note:** For sensitive data like API keys, using input variables is highly recommended over hardcoding them in your markdown files. Avoid committing files with plaintext secrets; instead, provide them at runtime via the CLI.
+
+### JavaScript Execution
+
+You can execute `javascript` blocks by adding a `run` option which allows programmatically changing the context, making request assertions and solve other more advanced use cases
+
+**Example:**
+
+````markdown
+```javascript run
+input.test = "Hello World";
+```
+
+::input[test]
+
+```http json
+POST https://httpbin.org/post
+
+{"input": "{{input.test}}"}
+
+```
+
+```javascript run,hidden
+// Use chai's `expect`, `assert` or `should` to make assumptions
+expect(response.body.json.input).to.equal("Hello World");
+```
+
+````
+
+<details>
+  <summary>Output</summary>
+
+````markdown
+```javascript
+input.test = "Hello World";
+```
+
+```
+test=Hello World
+```
+
+```http
+POST https://httpbin.org/post
+
+{"input": "Hello World"}
+
+```
+
+````
+
+</details>
+
+**Options:**
+
+* `run`: If present the code block will be executed
+
+  * Example: ` ```javascript run `
+
+* `hidden`: If present the code block will not be included in the resulting output
+
+  * Example: ` ```javascript hidden `
+
+* `output`: If present the code blocks return value will be rendered as a `yaml` code block
 
 ### HTTP Block Configuration Options
 
